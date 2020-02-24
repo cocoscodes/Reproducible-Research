@@ -22,6 +22,12 @@ library(knitr) # is a package that builds on the work of Sweave and provides muc
 # • Synthesis and write up
 # • Creating reproducible code
 
-# Markdown Syntax - review on report-writing-in-R.pdf
+# Organizing data files ----
+
+# Raw and processed data
+# Exploratory figures - serve the role of giving you a quick look at various aspects of your data.
+# Scripts
+# R markdown files - review on report-writing-in-R.pdf
+# Final report
 
   
