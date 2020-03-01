@@ -47,4 +47,42 @@ library(knitr) # is a package that builds on the work of Sweave and provides muc
 # Markdown can subsequently be converted to HTML using the markdown package in R
 # The slidify package converts the content into slides
 
+# Knitr ----
+# Literate statistical programming - text explanation and code (weaved and tangled)
+
+# documentation languages -> Markdown, LaTeX, or HTML
+
+# Mardown is an specific version of Markup language
+
+# My general feeling is that knitr is ideal for
+# • Manuals
+# • Short/medium-length technical documents
+# • Tutorials
+# • Reports, especially if they will be generated periodically with updated data
+# • Data preprocessing documents and summaries
+#I feel that knitr is NOT particularly well-suited for the following:
+# • Very long research articles
+# • Documenting very complex and time-consuming computations
+# • Documents that require precise formatting (although this is more an issue with using 
+# Markdown than it is with using knitr)
+
+# easiest way just using Rstudio R Markdown file editor
+# more complex way
+library(knitr)
+knit2html("markdown_demo.Rmd") # knit into an HTML
+browseURL("markdown_demo.html") # open in web browser
+
+# Steps Rmarkdown -> Markdown -> html
+# DO NOT EDIT the secondary files ONLY the original Rmd
+install.packages("xtable") # this package will allow better table printing in the final doc
+# Review knitr Rmd doc
+
+
+
+
+
+
+
+
+
 
