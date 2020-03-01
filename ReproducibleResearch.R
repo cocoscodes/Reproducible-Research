@@ -26,8 +26,25 @@ library(knitr) # is a package that builds on the work of Sweave and provides muc
 
 # Raw and processed data
 # Exploratory figures - serve the role of giving you a quick look at various aspects of your data.
-# Scripts
+# Final figures
+# Scripts - raw and final
 # R markdown files - review on report-writing-in-R.pdf
+# Readme files - if you dont use R markdown
 # Final report
 
-  
+# Coding standards for R ----
+# 1.- Always write your code using a text editor and save as a text file
+# 2.- Indent your code
+# 3.- Limit the with of your code to 80 columns
+# 4.- Limit the lenght of a function, keep it simple
+
+# Markdown ----
+# is a text-to-HTML conversion tool for web writers. Markdown allows you to write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML)
+# For syntax review Report-writing-in-R.pdf
+
+# R Markdown - a mixture of markdown and live R code
+# knitr package transforms R markdown into standar Markdown, 
+# Markdown can subsequently be converted to HTML using the markdown package in R
+# The slidify package converts the content into slides
+
+
