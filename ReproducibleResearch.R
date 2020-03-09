@@ -137,3 +137,22 @@ ggplot(stepsMean,aes(Interval,Stepsmean,color=Weekcat)) +
   facet_grid(Weekcat~.) + 
   labs(y="Average number of steps", x="5-minute interval") + 
   theme(legend.position = "none")
+
+# Basic reproducibility check list: ----
+#  • Are we doing good science?
+#  • Was any part of this analysis done by hand?If so, are those parts 
+# precisely document? Does the documentation match reality?
+#  • Have we taught a computer to do as much as possible (i.e. coded)?
+#  • Are we using a version control system?
+#  • Have we documented our software environment? sessionInfo()
+#  • Have we saved any output that we cannot reconstruct from original 
+# data + code?
+#  • How far back in the analysis pipeline can we go before our results 
+# are no longer (automatically) reproducible?
+
+# Evidence-based Data Analysis ----
+
+
+
+
+
