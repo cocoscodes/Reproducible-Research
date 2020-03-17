@@ -150,9 +150,121 @@ ggplot(stepsMean,aes(Interval,Stepsmean,color=Weekcat)) +
 #  • How far back in the analysis pipeline can we go before our results 
 # are no longer (automatically) reproducible?
 
-# Evidence-based Data Analysis ----
+# RepResearch Course project 2 ----
+getwd()
+setwd("/Users/alejandrosolis/Desktop/Data_Sc/R/Reproducible-Research/RepResearchCourseProject")
 
+stormData <- read.csv("repdata_data_StormData.csv.bz2")
+head(stormData)
+str(stormData)
+summary(stormData)
+unique(stormData$EVTYPE)
+# Across the United States, which types of events (as indicated in the 
+# EVTYPE variable) are most harmful with respect to population health?
+library(dplyr)
+library(ggplot2)
+stormData$BGN_DATE <- as.Date(as.character(stormData$BGN_DATE),"%m/%d/%Y %H:%M:%S")
+popHealth <- stormData %>%
+  group_by(EVTYPE) %>%
+  summarise(fatalities = sum(FATALITIES),
+            injuries = sum(INJURIES)) %>% 
+  arrange(desc(fatalities))
 
+top10Fat <- popHealth[1:10,c(1,2)]
+top10inj <- popHealth[,c(1,3)]
+top10inj$injuries <- sort(top10inj$injuries,decreasing = TRUE)
+top10inj <- top10inj[1:10,]
 
+require(gridExtra)
+plot1 <- ggplot(top10Fat,aes(top10Fat$EVTYPE,top10Fat$fatalities, 
+                  fill = top10Fat$fatalities)) + geom_bar(stat="identity") + 
+  xlab("Type of event")+ylab("# of fatalities")+coord_flip()+ 
+  theme(legend.position = "none")
+  
+plot2 <- ggplot(top10inj,aes(top10inj$EVTYPE,top10inj$injuries, 
+                    fill = top10inj$injuries)) + geom_bar(stat="identity") + 
+  xlab("Type of event")+ylab("# of injuries")+coord_flip()+ 
+  theme(legend.position = "none")
+grid.arrange(plot1,plot2,nrow=2)
+# Tornados
+
+names(stormData)
+
+# Across the United States, which types of events have the greatest economic 
+# consequences?
+
+econDmg <- stormData %>%
+  group_by(EVTYPE) %>%
+  select(event= EVTYPE, property = PROPDMG, propertyExp = PROPDMGEXP,
+         crops=CROPDMG,cropsExp = CROPDMGEXP)
+
+unique(stormData$PROPDMGEXP)
+unique(stormData$CROPDMGEXP)
+
+econDmg$propertyExp <- as.character(econDmg$propertyExp)
+econDmg$cropsExp <- as.character(econDmg$cropsExp)
+
+econDmg$propertyExp[econDmg$propertyExp=="-"] <- 0
+econDmg$propertyExp[econDmg$propertyExp=="?"] <- 0
+econDmg$propertyExp[econDmg$propertyExp=="+"] <- 0
+econDmg$propertyExp[econDmg$propertyExp==""] <- 1
+econDmg$propertyExp[econDmg$propertyExp=="1"] <- 10
+econDmg$propertyExp[econDmg$propertyExp=="2"] <- 100
+econDmg$propertyExp[econDmg$propertyExp=="3"] <- 1000
+econDmg$propertyExp[econDmg$propertyExp=="4"] <- 10000
+econDmg$propertyExp[econDmg$propertyExp=="5"] <- 100000
+econDmg$propertyExp[econDmg$propertyExp=="6"] <- 1000000
+econDmg$propertyExp[econDmg$propertyExp=="7"] <- 10000000
+econDmg$propertyExp[econDmg$propertyExp=="8"] <- 100000000
+econDmg$propertyExp[econDmg$propertyExp=="H"] <- 100
+econDmg$propertyExp[econDmg$propertyExp=="h"] <- 100
+econDmg$propertyExp[econDmg$propertyExp=="K"] <- 1000
+econDmg$propertyExp[econDmg$propertyExp=="M"] <- 1000000
+econDmg$propertyExp[econDmg$propertyExp=="m"] <- 1000000
+econDmg$propertyExp[econDmg$propertyExp=="B"] <- 1000000000
+
+econDmg$propertyExp <- as.numeric(econDmg$propertyExp)
+
+econDmg$cropsExp[econDmg$cropsExp=="?"] <- 0
+econDmg$cropsExp[econDmg$cropsExp=="0"] <- 1
+econDmg$cropsExp[econDmg$cropsExp==""] <- 1
+econDmg$cropsExp[econDmg$cropsExp=="2"] <- 100
+econDmg$cropsExp[econDmg$cropsExp=="k"] <- 1000
+econDmg$cropsExp[econDmg$cropsExp=="K"] <- 1000
+econDmg$cropsExp[econDmg$cropsExp=="M"] <- 1000000
+econDmg$cropsExp[econDmg$cropsExp=="m"] <- 1000000
+econDmg$cropsExp[econDmg$cropsExp=="B"] <- 1000000000
+
+econDmg$cropsExp <- as.numeric(econDmg$cropsExp)
+
+econDmg$propcost <- econDmg$property*econDmg$propertyExp
+econDmg$cropcost <- econDmg$crops*econDmg$cropsExp
+
+top10prop <- econDmg %>%
+  group_by(event) %>%
+  summarise(cost=sum(propcost)) %>%
+  arrange(desc(cost))
+top10prop <- top10prop[1:10,]
+
+top10crop <- econDmg %>%
+  group_by(event) %>%
+  summarise(cost=sum(cropcost)) %>%
+  arrange(desc(cost))
+top10crop <- top10crop[1:10,]
+
+require(gridExtra)
+plot3 <- ggplot(top10prop,aes(top10prop$event,top10prop$cost,fill=top10prop$cost))+
+  geom_bar(stat="identity") + 
+  xlab("Type of event")+ylab("Property costs")+coord_flip()+ 
+  theme(legend.position = "none")
+
+plot4 <- ggplot(top10crop,aes(top10crop$event,top10crop$cost,fill=top10crop$cost))+
+  geom_bar(stat="identity") + 
+  xlab("Type of event")+ylab("Crop costs")+coord_flip()+ 
+  theme(legend.position = "none")
+
+grid.arrange(plot3,plot4,nrow=2)
+
+top10crop[1,2]>top10prop[1,2]
 
 
